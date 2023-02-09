@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro Produto</title>
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+    <main>
+        <form>
+            <h3>Cadastro</h3>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="nomeProduto">Nome do Produto</label>
+                            <input type="text" class="form-control" id="nomeCliente" placeholder="Produto">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="descricao">Descrição</label>
+                            <input type="text" class="form-control" id="endereco" placeholder="Sobre o produto...">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="precoUni">Preço Unitário:</label>
+                            <input type="number" class="form-control" id="precoUni" placeholder="0.0">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
+                            <input type="number" class="form-control" id="estoque" placeholder="1">
+                        </div>
+                    </div>
+                    <input type="submit" value="Enviar" class="enviar">
+                </div>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

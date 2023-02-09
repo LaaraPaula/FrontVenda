@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Views\Cliente\ExibeCliente.cshtml" />
+    <None Include="Views\Fornecedor\ExibeFornecedor.cshtml" />
+    <None Include="Views\Funcionario\ExibeFuncionario.cshtml" />
+    <EmbeddedResource Include="Views\Produto\ExibeProduto.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
+  </ItemGroup>
+
+</Project>

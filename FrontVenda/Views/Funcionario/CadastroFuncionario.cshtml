@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro Funcionario</title>
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+    <main>
+        <form>
+            <h3>Cadastro</h3>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="nomeFuncionario">Nome do Funcionário</label>
+                            <input type="text" class="form-control" id="nomeFuncionario" placeholder="Nome do Funcionario">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="telefone">Telefone</label>
+                            <input type="text" class="form-control" id="telefone" placeholder="XXXXXXX-XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="cpf">CPF</label>
+                            <input type="text" class="form-control" id="cpf" placeholder="XXX.XXX.XXX-XX">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="endereco">Endereço</label>
+                            <input type="text" class="form-control" id="endereco" placeholder="Endereço">
+                        </div>
+                        <div class="cargos">
+                            <label class="control-label" for="cargos">Cargos</label>
+                            <select class="custom-select">
+                                <option selected>Selecione</option>
+                                <option value="1">Chefe</option>
+                                <option value="2">Gerente</option>
+                                <option value="3">Vendedor</option>
+                                <option value="4">Atendente</option>
+                                <option value="5">Telefonista</option>
+                                <option value="6">Gerente Comercial</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="submit" value="Enviar" class="enviar">
+
+        </form>
+
+    </main>
+</body>
+</html>
+
+
+@*<fieldset>
+                <legend class="control-label"> Cargo</legend>
+
+                <label for="radio-cargo"><input type="radio" name="cargo" value="1" id="radio-chefe">Chefe</label>
+                <label for="radio-cargo"><input type="radio" name="cargo" value="2" id="radio-gerente">Gerente</label>
+                <label for="radio-cargo"><input type="radio" name="cargo" value="3" id="radio-vendedor">Vendedor</label>
+                <label for="radio-cargo"><input type="radio" name="cargo" value="4" id="radio-atendente">Atendente</label>
+                <label for="radio-cargo"><input type="radio" name="cargo" value="5" id="radio-telefonista">Telefonista</label>
+                <label for="radio-cargo"><input type="radio" name="cargo" value="6" id="radio-gerenteComercial">Gerente Comercial</label>
+
+            </fieldset>*@
