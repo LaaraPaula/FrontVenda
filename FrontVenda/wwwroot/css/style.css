@@ -11,7 +11,11 @@ header{
 	width: 100%;
 
 }
-form{
+th{
+	font-weight:bold;
+	font-size:18px;
+}
+form {
 	margin: 40px 10px;
 }
 form label, form legend{
@@ -50,17 +54,8 @@ table {
 	margin: 20px 0 40px;
 	margin: 0 auto;
 }
-thead{
-	background: #555555;
-	color: white;
-	font-weight: bold;
-}
-td, th{
-	border:solid #000000;
-	padding: 8px 15px;
-}
 h3{
-	margin:0 0 10px 50px;
+	margin:0 0 10px 70px;
 }
 .banner{
 	width: 100%;
@@ -70,7 +65,7 @@ h3{
 	font-size: 2em;
 	font-family: Arial;
 	color: #4169E1;
-	margin: 20px 10px 1em;
+	margin: 20px 10px 45px;
 	clear: left;
 }
 .principal{
@@ -102,19 +97,15 @@ h3{
 	text-align: right;
 }
 .botaoCadastrar {
-	width: 150px;
+	width: 100px;
 	text-align: right;
 	color:aliceblue;
 	padding: 15px 15px;
-	margin: 10px 10px;
+	margin: 30px 10px;
 	border: 1px solid #eee;
 	border-radius: 6px;
 	background-color: #32CD32;
 	font-size: 18px;
-}
-.botaoCadastrar:hover {
-	background: #32CD32;
-	transform: scale(1.15);
 }
 @media screen and(max-width: 480px) {
 	.caixa, .principal, .conteudo-beneficios, .mapa-conteudo, .video{
