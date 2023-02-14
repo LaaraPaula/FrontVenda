@@ -1,3 +1,5 @@
+@model List<Cliente>;
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -22,59 +24,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>mdo</td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-default">Editar
-                            <span id ="editar" class="fa fa-pencil"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-default">Remover
-                            <span id ="excluir"class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>fat</td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-default">Editar
-                            <span id ="editar" class="fa fa-pencil"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-default">Remover
-                            <span id ="excluir"class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>twitter</td>
-                    <td></td>
-                    <td>
-                        <button class="btn btn-default">
-                            Editar
-                            <span id="editar" class="fa fa-pencil"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-default">
-                            Remover
-                            <span id="excluir" class="fa fa-trash"></span>
-                        </button>
-                    </td>
-                </tr>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.nome)</td>
+                        <td>@Html.DisplayFor(modelItem => item.cpf)</td>
+                        <td>@Html.DisplayFor(modelItem => item.telefone)</td>
+                        <td>@Html.DisplayFor(modelItem => item.endereco)</td>
+                        <td>
+                            <button class="btn btn-default">
+                                Editar
+                                <span id="editar" class="fa fa-pencil"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-default">
+                                Remover
+                                <span id="excluir" class="fa fa-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }                
             </tbody>
         </table>
     </section>

@@ -50,6 +50,26 @@ form label, form legend{
 	background: #4169E1;
 	transform: scale(1.15);
 }
+.diferente{
+	background:none;
+	border: 0;
+	position:relative;
+}
+.diferente:after {
+	content: '';
+
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: #4169E1;
+
+	position:absolute;
+	top:-50%;
+	left:-10%;
+	opacity:0.3;
+	z-index:-1;
+
+}
 table {
 	margin: 20px 0 40px;
 	margin: 0 auto;

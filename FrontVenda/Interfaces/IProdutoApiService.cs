@@ -1,6 +1,6 @@
 ﻿namespace FrontVenda.Interfaces
 {
-    public class IProdutoApiService
+    public interface IProdutoApiService
     {
     }
 }

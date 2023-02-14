@@ -1,6 +1,12 @@
-﻿namespace FrontVenda.Interfaces
+﻿using FrontVenda.Response;
+using Refit;
+using System.Threading.Tasks;
+
+namespace FrontVenda.Interfaces
 {
-    public class IClienteApiService
+    public interface IClienteApiService
     {
+        [Get("/controller/ExibeClientes/")]
+        Task <ClienteResponse> GetAddressAsync(string cep);
     }
 }

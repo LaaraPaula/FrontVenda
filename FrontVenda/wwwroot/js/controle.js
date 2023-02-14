@@ -11,7 +11,7 @@
 //                list.appendChild(li);
 //            })
 //        })
-        
+
 //}
 
 //function fazGet(url) {
@@ -54,7 +54,7 @@
 //    });
 //}
 
-fetchApiData();
+//fetchApiData();
 
 
 
@@ -76,3 +76,36 @@ fetchApiData();
 //        });
 //    });
 //}
+
+//const uri = 'http://localhost:65416/';
+//let todos = [];
+
+//function getClientes() {
+//    debugger;
+//    fetch(uri + 'controller/exibeclientes')
+//        .then(response => response.json())
+//        .then(data => _displayItems(data))
+//        .catch(error => console.error('Erro', error))
+//}
+
+//function _displayItems(data) {
+//    data.forEach(item => {
+//        console.log(item);
+//    })
+//}
+
+//getClientes();
+
+//var xhr = new XMLHttpRequest();
+
+//xhr.onreadystatechange = function () {
+//    console.log(xhr);
+
+//    if (xhr.readyState == 4) {
+//        debugger;
+//        console.log("Is 4");
+//    }
+//}
+
+//xhr.open("GET", "https://localhost:5001/controller/exibeclientes", true)
+//xhr.send();
