@@ -13,6 +13,12 @@
 
 </head>
 <body>
+    @if (ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
+    {
+        <script type="text/javascript">
+            alert('@ViewBag.Alerta');
+        </script>
+    }
     <h1 class="titulo-principal">Fornecedores</h1>
     <section class="lista">
         <table class="table table-striped">
@@ -34,17 +40,23 @@
                         <td>@Html.DisplayFor(modelItem => item.cnpj)</td>
                         <td>@Html.DisplayFor(modelItem => item.telefone)</td>
                         <td>@Html.DisplayFor(modelItem => item.endereco)</td>
-                        <td>
-                            <button class="btn btn-default">
-                                Editar
-                                <span id="editar" class="fa fa-pencil"></span>
-                            </button>
+                        <td>  
+                            @Html.ActionLink(
+                                "Editar",
+                                "EditarFornecedor",
+                                "Cliente",
+                                new {id = item.id},
+                                new {@class="btn btn-default fa fa-pencil"}
+                            )
                         </td>
                         <td>
-                            <button class="btn btn-default">
-                                Remover
-                                <span id="excluir" class="fa fa-trash"></span>
-                            </button>
+                            @Html.ActionLink(
+                                "Remover",
+                                "ExcluirFornecedor",
+                                "Fornecedor",
+                                new {id = item.id},
+                                new {@class="btn btn-default fa fa-trash"}
+                            )
                         </td>
                     </tr>
                 }

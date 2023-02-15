@@ -35,17 +35,23 @@
                         <td>@Html.DisplayFor(modelItem => item.descricao)</td>
                         <td>@Html.DisplayFor(modelItem => item.precoUnitario)</td>
                         <td>@Html.DisplayFor(modelItem => item.quantidadeEstoque)</td>
-                        <td>
-                            <button class="btn btn-default">
-                                Editar
-                                <span id="editar" class="fa fa-pencil"></span>
-                            </button>
+                        <td>  
+                            @Html.ActionLink(
+                                "Editar",
+                                "EditarProduto",
+                                "Produto",
+                                new {id = item.id},
+                                new {@class="btn btn-default fa fa-pencil"}
+                            )
                         </td>
                         <td>
-                            <button class="btn btn-default">
-                                Remover
-                                <span id="excluir" class="fa fa-trash"></span>
-                            </button>
+                            @Html.ActionLink(
+                                "Remover",
+                                "ExcluirProduto",
+                                "Produto",
+                                new {id = item.id},
+                                new {@class="btn btn-default fa fa-trash"}
+                            )
                         </td>
                     </tr>
                 }
