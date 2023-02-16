@@ -43,6 +43,10 @@ namespace FrontVenda.Controllers
         {
             return View();
         }
+        public IActionResult EditarFuncionario(int id)
+        {
+            return View();
+        }
         public IActionResult ExcluirFuncionario(int id)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/deletafuncionario?id={id}");

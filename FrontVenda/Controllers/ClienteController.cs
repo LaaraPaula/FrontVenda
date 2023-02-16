@@ -45,6 +45,10 @@ namespace FrontVenda.Controllers
         {
             return View();
         }
+        public IActionResult EditarCliente(int id)
+        {
+            return View();
+        }
         public IActionResult ExcluirCliente(int id)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/deletacliente?id={id}");

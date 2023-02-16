@@ -1,3 +1,8 @@
+@using FrontVenda.Models
+
+
+@model FrontVenda.Models.Fornecedor
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,29 +16,58 @@
 </head>
 <body>
     <h3>Cadastro</h3>
-
+    @using (Html.BeginForm("CadastroFornecedorForm", "Fornecedor", FormMethod.Post))
+    {
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="control-label" for="nomeFornecedor">Nome do Fornecedor</label>
-                    <input type="text" class="form-control" id="nomeFornecedor" placeholder="Nome do Fornecedor">
+                    @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Fornecedor" })
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="telefone">Telefone</label>
-                    <input type="text" class="form-control" id="telefone" placeholder="XXXXXXX-XXXX">
+                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX" })
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="cnpj">CNPJ</label>
-                    <input type="text" class="form-control" id="cnpj" placeholder="XX.XXX.XXX/XXXX-XX">
+                        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", @placeholder="XX.XXX.XXX/XXXX-XX"})
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="endereco">Endereço</label>
-                    <input type="text" class="form-control" id="endereco" placeholder="Endereço">
+                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" })
                 </div>
             </div>
+                @Html.HiddenFor(model => model.id, new { @value = 0 })
             <input type="submit" value="Enviar" class="enviar">
         </div>
     </div>
+    }
 </body>
 </html>
+
+@*<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label" for="nomeFornecedor">Nome do Fornecedor</label>
+                <input type="text" class="form-control" id="nomeFornecedor" placeholder="Nome do Fornecedor">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="telefone">Telefone</label>
+                <input type="text" class="form-control" id="telefone" placeholder="XXXXXXX-XXXX">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="cnpj">CNPJ</label>
+                <input type="text" class="form-control" id="cnpj" placeholder="XX.XXX.XXX/XXXX-XX">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="endereco">Endereço</label>
+                <input type="text" class="form-control" id="endereco" placeholder="Endereço">
+            </div>
+        </div>
+
+        <input type="submit" value="Enviar" class="enviar">
+    </div>
+</div>
+    }*@

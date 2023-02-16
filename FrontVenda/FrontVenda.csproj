@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="SharePointPnPCoreOnline" Version="3.28.2012" />
   </ItemGroup>
 

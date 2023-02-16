@@ -40,7 +40,43 @@ namespace FrontVenda.Controllers
 
             }
         }
+        [HttpPost]
+        public IActionResult CadastroFornecedorForm(Fornecedor fornecedor)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/savefornecedor");
+            request.Method = "POST";
+
+            try
+            {
+                WebResponse webResponse = request.GetResponse();
+                Stream webStream = webResponse.GetResponseStream();
+                StreamReader responseReader = new(webStream);
+                string response = responseReader.ReadToEnd();
+
+                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response });
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
+            }
+        }
+        [HttpGet]
         public IActionResult CadastroFornecedor()
+        {
+            return View();
+        }
+        public IActionResult EditarFornecedor(int id)
         {
             return View();
         }

@@ -42,9 +42,66 @@ namespace FrontVenda.Controllers
         }
         public IActionResult CadastroProduto()
         {
-            return View();
-        }
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/saveproduto");
+            request.Method = "POST";
 
+            try
+            {
+                WebResponse webResponse = request.GetResponse();
+                Stream webStream = webResponse.GetResponseStream();
+                StreamReader responseReader = new(webStream);
+                string response = responseReader.ReadToEnd();
+
+                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = response });
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = result });
+
+            }
+        }
+        public IActionResult EditarProduto(int id)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/saveproduto");
+            request.Method = "POST";
+
+            try
+            {
+                WebResponse webResponse = request.GetResponse();
+                Stream webStream = webResponse.GetResponseStream();
+                StreamReader responseReader = new(webStream);
+                string response = responseReader.ReadToEnd();
+
+                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = response });
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = result });
+
+            }
+        }
         public IActionResult ExcluirProduto(int id)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/deletaproduto?id={id}");
