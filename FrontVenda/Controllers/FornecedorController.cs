@@ -23,9 +23,21 @@ namespace FrontVenda.Controllers
 
                 return View(fornecedor);
             }
-            catch (Exception e)
+            catch (WebException ex)
             {
-                return BadRequest(e.Message);
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = result });
+
             }
         }
         public IActionResult CadastroFornecedor()
@@ -46,9 +58,21 @@ namespace FrontVenda.Controllers
 
                 return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response });
             }
-            catch (Exception e)
+            catch (WebException ex)
             {
-                return BadRequest(e.Message);
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = result });
+
             }
 
         }
