@@ -15,6 +15,12 @@
 
 </head>
 <body>
+    @if (ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
+    {
+        <script type="text/javascript">
+            alert('@ViewBag.Alerta');
+        </script>
+    }
     <h3>Cadastro</h3>
     @using (Html.BeginForm("CadastroFornecedorForm", "Fornecedor", FormMethod.Post))
     {
@@ -38,7 +44,8 @@
                         @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" })
                 </div>
             </div>
-                @Html.HiddenFor(model => model.id, new { @value = 0 })
+                @Html.HiddenFor(model => model.id)
+                @Html.AntiForgeryToken()
             <input type="submit" value="Enviar" class="enviar">
         </div>
     </div>

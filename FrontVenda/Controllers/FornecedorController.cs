@@ -6,11 +6,16 @@ using System;
 using System.Net;
 using System.Text.Json;
 using Microsoft.SharePoint.Client;
+using RestSharp;
+using Newtonsoft.Json;
 
 namespace FrontVenda.Controllers
 {
-    public class FornecedorController :Controller
+    public class FornecedorController : Controller
     {
+        private RestRequest _request;
+        private RestClient _cliente;
+        private const string _urlBase = "https://localhost:5001/controller/";
         public IActionResult ExibeFornecedor(string alerta = null)
         {
             try
@@ -40,20 +45,38 @@ namespace FrontVenda.Controllers
 
             }
         }
-        [HttpPost]
+        [HttpPost("CadastroFornecedorForm")]
         public IActionResult CadastroFornecedorForm(Fornecedor fornecedor)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/savefornecedor");
-            request.Method = "POST";
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest("SaveFornecedor");
 
             try
             {
-                WebResponse webResponse = request.GetResponse();
-                Stream webStream = webResponse.GetResponseStream();
-                StreamReader responseReader = new(webStream);
-                string response = responseReader.ReadToEnd();
+                _request.Timeout = 0;
+                _request.Method = Method.Post;
+                _request.AddBody(fornecedor, "application/json");
 
-                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response });
+                RestResponse response = _cliente.Execute(_request);
+
+                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
+                {
+                    Fornecedor fornecedorCadastrado = JsonConvert.DeserializeObject<Fornecedor>(response.Content);
+
+                    return RedirectToAction(
+                                            "CadastroFornecedor",
+                                            "Fornecedor",
+                                            new
+                                            {
+                                                Alerta = fornecedorCadastrado.id > 0 ?
+                                                "Fornecedor cadastrado com sucesso" : "Erro ao cadastrar fornecedor."
+                                            });
+                }
+                else
+                {
+                    return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content });
+
+                }
             }
             catch (WebException ex)
             {
@@ -72,9 +95,31 @@ namespace FrontVenda.Controllers
             }
         }
         [HttpGet]
-        public IActionResult CadastroFornecedor()
+        public IActionResult CadastroFornecedor(string alerta = null)
         {
-            return View();
+            try
+            {
+                if (alerta != null)
+                {
+                    ViewBag.Alerta = alerta;
+                }
+                return View();
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
+            }
         }
         public IActionResult EditarFornecedor(int id)
         {
@@ -121,7 +166,7 @@ namespace FrontVenda.Controllers
             Stream webStream = webResponse.GetResponseStream();
             StreamReader responseReader = new(webStream);
             string response = responseReader.ReadToEnd();
-            var fornecedores = JsonSerializer.Deserialize<List<Fornecedor>>(response);
+            var fornecedores = System.Text.Json.JsonSerializer.Deserialize<List<Fornecedor>>(response);
             return fornecedores;
         }
     }

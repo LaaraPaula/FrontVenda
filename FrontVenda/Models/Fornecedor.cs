@@ -2,7 +2,15 @@
 {
     public class Fornecedor
     {
-        public Fornecedor(int? id, string nome, string telefone, string endereco, string cnpj)
+        public Fornecedor()
+        {
+            id = 0;
+            nome = string.Empty;
+            telefone = string.Empty;
+            endereco = string.Empty;
+            cnpj = string.Empty;
+        }
+        public Fornecedor(int id, string nome, string telefone, string endereco, string cnpj)
         {
             this.id = id;
             this.nome = nome;
@@ -11,7 +19,7 @@
             this.cnpj = cnpj;
         }
 
-        public int? id { get; set; }
+        public int id { get; set; }
         public string nome { get; set; }
         public string telefone { get; set; }
         public string endereco { get; set; }
