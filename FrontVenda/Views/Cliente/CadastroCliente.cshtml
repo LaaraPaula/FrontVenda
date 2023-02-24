@@ -1,3 +1,8 @@
+@using FrontVenda.Models
+
+
+@model FrontVenda.Models.Cliente
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,31 +15,41 @@
 
 </head>
 <body>
+    @if (ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
+    {
+        <script type="text/javascript">
+            alert('@ViewBag.Alerta');
+        </script>
+    }
     <h3>Cadastro</h3>
-    
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="control-label" for="nomeCliente">Nome do Cliente</label>
-                    <input type="text" class="form-control" id="nomeCliente" placeholder="Nome do Cliente">
+    @using (Html.BeginForm("CadastroClienteForm", "Cliente", FormMethod.Post))
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label" for="nomeCliente">Nome do Cliente</label>
+                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Cliente" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="telefone">Telefone</label>
+                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="cpf">CPF</label>
+                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control", @placeholder="XXX.XXX.XXX-XX"})
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="endereco">Endereço</label>
+                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" })
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="telefone">Telefone</label>
-                    <input type="text" class="form-control" id="telefone" placeholder="XXXXXXX-XXXX">
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="cpf">CPF</label>
-                    <input type="text" class="form-control" id="cpf" placeholder="XXX.XXX.XXX-XX">
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="endereco">Endereço</label>
-                    <input type="text" class="form-control" id="endereco" placeholder="Endereço">
-                </div>
+                @Html.HiddenFor(model => model.id)
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Enviar" class="enviar">
             </div>
-            <input type="submit" value="Enviar" class="enviar">
         </div>
-    </div>
-    <script src="~/js/controle.js"></script>
+    }
+    <script src="/js/controle.js"></script>
 </body>
 </html>

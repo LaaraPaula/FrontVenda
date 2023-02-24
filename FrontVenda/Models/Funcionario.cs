@@ -1,17 +1,38 @@
-﻿namespace FrontVenda.Models
+﻿using APIVenda.Data.Enum;
+
+namespace FrontVenda.Models
 {
     public class Funcionario
     {
-        public Funcionario(int id, string nome, string telefone, string endereco, string cPF, string cargo)
+        public Funcionario()
+        {
+            id = 0;
+            nome = string.Empty;
+            telefone = string.Empty;
+            endereco = string.Empty;
+            cpf = string.Empty;
+            cargo =0;
+        }
+        public Funcionario(int id, string nome, string telefone, string endereco, string cpf, EnumCargo cargo)
         {
             this.id = id;
             this.nome = nome;
             this.telefone = telefone;
             this.endereco = endereco;
-            cpf = cPF;
+            this.cpf = cpf;
             this.cargo = cargo;
         }
 
+        public int id { get; set; }
+        public string nome { get; set; }
+        public string telefone { get; set; }
+        public string endereco { get; set; }
+        public string cpf { get; set; }
+        public EnumCargo cargo { get; set; }        
+    }
+
+    public class FuncionarioGet
+    {
         public int id { get; set; }
         public string nome { get; set; }
         public string telefone { get; set; }

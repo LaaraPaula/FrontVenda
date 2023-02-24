@@ -1,19 +1,12 @@
-﻿function Editar(id) {
-
-}
-function Excluir(id)
+﻿function Formata(valor)
 {
-    $.ajax(
-        {
-            url: "http://localhost:5001/controller/DeletaCliente?id=" + id
-            type: "DELETE",
-            
-        })
-    .success(function (data)
-    {
-        var retorno = data;
-        confirm(data.message);
-        location.reload();
-    });
+    var valFormat = valor.replace(/\D/g, "");
+
+    valFormat = (valFormat / 100).toFixed(2) + "";
+    valFormat = valFormat.replace(".", ",")
+    valFormat = valFormat.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+    valFormat = valFormat.replace(/(\d)(\d{3}),/g, "$1.$2,");
+
+    document.getElementById("precoUnitario").value = valFormat;
 
 }

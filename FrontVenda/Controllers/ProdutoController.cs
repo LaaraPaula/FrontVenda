@@ -6,11 +6,17 @@ using System;
 using System.Net;
 using System.Text.Json;
 using Microsoft.SharePoint.Client;
+using AngleSharp.Io;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace FrontVenda.Controllers
 {
     public class ProdutoController : Controller
     {
+        private RestRequest _request;
+        private RestClient _cliente;
+        private const string _urlBase = "https://localhost:5001/controller/";
         public IActionResult ExibeProduto(string alerta = null)
         {
             try
@@ -40,23 +46,58 @@ namespace FrontVenda.Controllers
 
             }
         }
-        public IActionResult CadastroProduto()
+        public IActionResult CadastroProdutoForm(Produto produto)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/saveproduto");
-            request.Method = "POST";
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest("SaveProduto");
 
             try
             {
-                WebResponse webResponse = request.GetResponse();
-                Stream webStream = webResponse.GetResponseStream();
-                StreamReader responseReader = new(webStream);
-                string response = responseReader.ReadToEnd();
+                _request.Timeout = 0;
+                _request.Method = Method.Post;
+                _request.AddBody(produto, "application/json");
 
-                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = response });
+                RestResponse response = _cliente.Execute(_request);
+
+                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
+                {
+                    Produto produtoCadastrado = JsonConvert.DeserializeObject<Produto>(response.Content);
+
+                    return RedirectToAction(
+                                            "CadastroProduto",
+                                            "Produto",
+                                            new
+                                            {
+                                                Alerta = produtoCadastrado.id > 0 ?
+                                                "Produto cadastrado com sucesso" : "Erro ao cadastrar produto."
+                                            });
+                }
+                else
+                {
+                    return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content });
+
+                }
             }
             catch (WebException ex)
             {
                 string result = "Erro ao realizar requisição.\n" + ex.Message;
+
+                return RedirectToAction("CadastroProdutoView", "Produto", new { Alerta = result });
+            }
+        }
+        public IActionResult CadastroProduto(string alerta = null)
+        {
+            try
+            {
+                if (alerta != null)
+                {
+                    ViewBag.Alerta = alerta;
+                }
+                return View();
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisão.\n" + ex.Message;
                 var response = (HttpWebResponse)ex.Response;
 
                 if (response != null)
@@ -67,8 +108,7 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = result });
-
+                return RedirectToAction("CadastroProdutoView", "Produto", new { Alerta = result });
             }
         }
         public IActionResult EditarProduto(int id)
@@ -144,7 +184,7 @@ namespace FrontVenda.Controllers
             Stream webStream = webResponse.GetResponseStream();
             StreamReader responseReader = new(webStream);
             string response = responseReader.ReadToEnd();
-            var produtos = JsonSerializer.Deserialize<List<Produto>>(response);
+            var produtos = System.Text.Json.JsonSerializer.Deserialize<List<Produto>>(response);
             return produtos;
         }
 

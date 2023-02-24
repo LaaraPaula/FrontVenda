@@ -1,3 +1,7 @@
+@using FrontVenda.Models
+
+
+@model FrontVenda.Models.Produto
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,34 +14,41 @@
 
 </head>
 <body>
-    <main>
-        <form>
-            <h3>Cadastro</h3>
-
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label" for="nomeProduto">Nome do Produto</label>
-                            <input type="text" class="form-control" id="nomeCliente" placeholder="Produto">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="descricao">Descrição</label>
-                            <input type="text" class="form-control" id="endereco" placeholder="Sobre o produto...">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="precoUni">Preço Unitário:</label>
-                            <input type="number" class="form-control" id="precoUni" placeholder="0.0">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
-                            <input type="number" class="form-control" id="estoque" placeholder="1">
-                        </div>
+    @if (ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
+    {
+        <script type="text/javascript">
+            alert('@ViewBag.Alerta');
+        </script>
+    }
+    <h3>Cadastro</h3>
+    @using (Html.BeginForm("CadastroProdutoForm", "Produto", FormMethod.Post))
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label" for="nomeProduto">Nome do Produto</label>
+                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Produto" })
                     </div>
-                    <input type="submit" value="Enviar" class="enviar">
+                    <div class="form-group">
+                        <label class="control-label" for="descricao">Descrição</label>
+                        @Html.TextBoxFor(model => model.descricao, new { @class = "form-control" , @placeholder="Sobre o Produto.."})
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="precoUni">Preço Unitário:</label>
+                        @Html.TextBoxFor(model => model.precoUnitario, new { @class = "form-control" ,@onkeyup="Formata(this.value)", @placeholder="0,00"})
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
+                        @Html.TextBoxFor(model => model.quantidadeEstoque, new { @class = "form-control" , @type="number",@min="1",@placeholder="0"})
+                    </div>
                 </div>
+                @Html.HiddenFor(model => model.id)
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Enviar" class="enviar">
             </div>
-        </form>
-    </main>
+        </div>        
+    }
+    <script src="/js/controle.js"></script>
 </body>
 </html>

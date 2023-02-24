@@ -97,29 +97,7 @@ namespace FrontVenda.Controllers
         [HttpGet]
         public IActionResult CadastroFornecedor(string alerta = null)
         {
-            try
-            {
-                if (alerta != null)
-                {
-                    ViewBag.Alerta = alerta;
-                }
-                return View();
-            }
-            catch (WebException ex)
-            {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
-                var response = (HttpWebResponse)ex.Response;
-
-                if (response != null)
-                {
-                    StreamReader stream = new StreamReader(response.GetResponseStream());
-                    result = stream.ReadToEnd().ToString();
-
-                    if (string.IsNullOrEmpty(result))
-                        result = ex.Message;
-                }
-                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
-            }
+            return View();
         }
         public IActionResult EditarFornecedor(int id)
         {
