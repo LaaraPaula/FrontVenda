@@ -21,7 +21,14 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    <h3>Cadastro</h3>
+    @if(ViewData["Titulo"]!= null)
+    {
+        <h3> @ViewData["Titulo"]</h3>
+    }
+    else
+    {
+        <h3>Cadastro</h3>
+    }
     @using (Html.BeginForm("CadastroClienteForm", "Cliente", FormMethod.Post))
     {
         <div class="panel panel-default">
@@ -29,22 +36,22 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label" for="nomeCliente">Nome do Cliente</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Cliente" })
+                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control",@required="required" ,@placeholder="Nome do Cliente" })
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="telefone">Telefone</label>
-                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX" })
+                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" ,@required="required", @placeholder="XXXXXXX-XXXX" })
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="cpf">CPF</label>
-                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control", @placeholder="XXX.XXX.XXX-XX"})
+                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control",@required="required", @placeholder="XXX.XXX.XXX-XX"})
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="endereco">Endereço</label>
-                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" })
+                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control",@required="required", @placeholder="Endereço" })
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.id)
+                @Html.HiddenFor(model => model.id , new{@value=Model.id})
                 @Html.AntiForgeryToken()
                 <input type="submit" value="Enviar" class="enviar">
             </div>

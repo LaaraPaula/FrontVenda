@@ -89,13 +89,15 @@ namespace FrontVenda.Controllers
         }
         public IActionResult CadastroCliente(string alerta = null)
         {
+            
             try
             {
-                if(alerta != null)
+                Cliente cliente = new Cliente();
+                if (alerta != null)
                 {
                     ViewBag.Alerta = alerta;
                 }
-                return View();
+                return View(cliente);
             }
             catch (WebException ex)
             {
@@ -113,9 +115,52 @@ namespace FrontVenda.Controllers
                 return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
             }
         }
-        public IActionResult EditarCliente(int id)
+        public IActionResult EditarClienteForm(Cliente cliente)
         {
-            return View();
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest("SaveClient");
+
+            try
+            {
+                _request.Timeout = 0;
+                _request.Method = Method.Post;
+                _request.AddBody(cliente, "application/json");
+
+                RestResponse response = _cliente.Execute(_request);
+
+                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
+                {
+                    Cliente clienteCadastrado = JsonConvert.DeserializeObject<Cliente>(response.Content);
+
+                    return RedirectToAction(
+                                            "EditarCliente",
+                                            "Cliente",
+                                            new
+                                            {
+                                                Alerta = clienteCadastrado.id > 0 ?
+                                                $"Cliente {cliente.nome} editado com sucesso" : $"Erro ao editar cliente {cliente.nome}."
+                                            });
+                }
+                else
+                {
+                    return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content });
+
+                }
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisição.\n" + ex.Message;
+
+                return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
+            }
+        }
+        public IActionResult EditarCliente(int id = 0)
+        {
+            Cliente cliente = new Cliente();
+            cliente.id = id;
+
+            ViewData["Titulo"] = "Editar";
+            return View("CadastroCliente", cliente);
         }
         public IActionResult ExcluirCliente(int id)
         {
