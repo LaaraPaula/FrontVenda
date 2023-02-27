@@ -22,7 +22,14 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    <h3>Cadastro</h3>
+    @if (ViewData["Titulo"] != null)
+    {
+        <h3> @ViewData["Titulo"]</h3>
+    }
+    else
+    {
+        <h3>Cadastro</h3>
+    }
     @using (Html.BeginForm("CadastroFuncionarioForm", "Funcionario", FormMethod.Post))
     {
         <div class="panel panel-default">
@@ -30,27 +37,28 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label" for="nomeFuncionario">Nome do Funcionário</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Funcionário" })
+                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Funcionário",@value=Model.nome })
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="telefone">Telefone</label>
-                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX" })
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="cpf">CPF</label>
-                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control", @placeholder="XXX.XXX.XXX-XX"})
+                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX",@value=Model.telefone })
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="endereco">Endereço</label>
-                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" })
+                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço",@value=Model.endereco })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="cpf">CPF</label>
+                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control", @placeholder="XXX.XXX.XXX-XX",@value=Model.cpf})
                     </div>
                     <div class="cargos">
                         <label class="control-label" for="cargos">Cargos</label>
                             @Html.DropDownListFor(model => model.cargo, new SelectList(new EnumCargoModel().MostraCargos(), "Id", "Nome"), new { @class = "cargos control-label custom-select form-controll" })
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.id)
+                @Html.HiddenFor(model => model.id, new{@value=Model.id})
                 @Html.AntiForgeryToken()
+
                 <input type="submit" value="Enviar" class="enviar">
             </div>
         </div>

@@ -19,7 +19,7 @@ namespace FrontVenda.Controllers
         private const string _urlBase = "https://localhost:5001/controller/";
 
         public IActionResult ExibeCliente(string alerta = null)
-        {            
+        {
             try
             {
                 if (alerta != null)
@@ -47,7 +47,7 @@ namespace FrontVenda.Controllers
 
             }
         }
-        
+
         public IActionResult CadastroClienteForm(Cliente cliente)
         {
             _cliente = new RestClient(_urlBase);
@@ -65,31 +65,41 @@ namespace FrontVenda.Controllers
                 {
                     Cliente clienteCadastrado = JsonConvert.DeserializeObject<Cliente>(response.Content);
 
+                    if (cliente.id == 0)
+                    {
+                        return RedirectToAction(
+                                                "CadastroCliente",
+                                                "Cliente",
+                                                new
+                                                {
+                                                    Alerta = clienteCadastrado.id > 0 ?
+                                                    "Cliente cadastrado com sucesso" : "Erro ao cadastrar cliente."
+                                                });
+                    }
+
                     return RedirectToAction(
-                                            "CadastroCliente",
+                                            "ExibeCliente",
                                             "Cliente",
                                             new
                                             {
                                                 Alerta = clienteCadastrado.id > 0 ?
-                                                "Cliente cadastrado com sucesso" : "Erro ao cadastrar cliente."
+                                                $"Cliente {cliente.nome} editado com sucesso" : $"Erro ao editar cliente {cliente.nome}."
                                             });
-                }
-                else
-                {
-                    return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content });
 
                 }
+
+                return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content });
             }
             catch (WebException ex)
             {
                 string result = "Erro ao realizar requisição.\n" + ex.Message;
-                
+
                 return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
             }
         }
         public IActionResult CadastroCliente(string alerta = null)
         {
-            
+
             try
             {
                 Cliente cliente = new Cliente();
@@ -105,7 +115,7 @@ namespace FrontVenda.Controllers
                 var response = (HttpWebResponse)ex.Response;
 
                 if (response != null)
-                { 
+                {
                     StreamReader stream = new StreamReader(response.GetResponseStream());
                     result = stream.ReadToEnd().ToString();
 
@@ -115,49 +125,17 @@ namespace FrontVenda.Controllers
                 return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
             }
         }
-        public IActionResult EditarClienteForm(Cliente cliente)
-        {
-            _cliente = new RestClient(_urlBase);
-            _request = new RestRequest("SaveClient");
-
-            try
-            {
-                _request.Timeout = 0;
-                _request.Method = Method.Post;
-                _request.AddBody(cliente, "application/json");
-
-                RestResponse response = _cliente.Execute(_request);
-
-                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
-                {
-                    Cliente clienteCadastrado = JsonConvert.DeserializeObject<Cliente>(response.Content);
-
-                    return RedirectToAction(
-                                            "EditarCliente",
-                                            "Cliente",
-                                            new
-                                            {
-                                                Alerta = clienteCadastrado.id > 0 ?
-                                                $"Cliente {cliente.nome} editado com sucesso" : $"Erro ao editar cliente {cliente.nome}."
-                                            });
-                }
-                else
-                {
-                    return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content });
-
-                }
-            }
-            catch (WebException ex)
-            {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
-
-                return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
-            }
-        }
+        
         public IActionResult EditarCliente(int id = 0)
         {
             Cliente cliente = new Cliente();
             cliente.id = id;
+
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest($"ExibeClientesPorId?id={cliente.id}");
+
+            RestResponse response = _cliente.Execute(_request);
+            cliente = JsonConvert.DeserializeObject<Cliente>(response.Content);
 
             ViewData["Titulo"] = "Editar";
             return View("CadastroCliente", cliente);
@@ -190,9 +168,9 @@ namespace FrontVenda.Controllers
                         result = ex.Message;
                 }
                 return RedirectToAction("ExibeCliente", "Cliente", new { Alerta = result });
-                
+
             }
-            
+
         }
 
         private List<Cliente> ObterClientes()

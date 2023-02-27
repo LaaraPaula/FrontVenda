@@ -63,20 +63,27 @@ namespace FrontVenda.Controllers
                 {
                     Produto produtoCadastrado = JsonConvert.DeserializeObject<Produto>(response.Content);
 
+                    if (produto.id == 0)
+                    {
+                        return RedirectToAction(
+                                                "CadastroProduto",
+                                                "Produto",
+                                                new
+                                                {
+                                                    Alerta = produtoCadastrado.id > 0 ?
+                                                    "Produto cadastrado com sucesso" : "Erro ao cadastrar produto."
+                                                });
+                    }
                     return RedirectToAction(
-                                            "CadastroProduto",
+                                            "ExibeProduto",
                                             "Produto",
                                             new
                                             {
                                                 Alerta = produtoCadastrado.id > 0 ?
-                                                "Produto cadastrado com sucesso" : "Erro ao cadastrar produto."
+                                                $"Produto {produto.nome} editado com sucesso" : $"Erro ao editar produto {produto.nome}."
                                             });
                 }
-                else
-                {
-                    return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content });
-
-                }
+                return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content });
             }
             catch (WebException ex)
             {
@@ -113,34 +120,17 @@ namespace FrontVenda.Controllers
         }
         public IActionResult EditarProduto(int id)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://localhost:5001/controller/saveproduto");
-            request.Method = "POST";
+            Produto produto = new Produto();
+            produto.id = id;
 
-            try
-            {
-                WebResponse webResponse = request.GetResponse();
-                Stream webStream = webResponse.GetResponseStream();
-                StreamReader responseReader = new(webStream);
-                string response = responseReader.ReadToEnd();
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest($"ExibeProdutosPorId?id={produto.id}");
 
-                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = response });
-            }
-            catch (WebException ex)
-            {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
-                var response = (HttpWebResponse)ex.Response;
+            RestResponse response = _cliente.Execute(_request);
+            produto = JsonConvert.DeserializeObject<Produto>(response.Content);
 
-                if (response != null)
-                {
-                    StreamReader stream = new StreamReader(response.GetResponseStream());
-                    result = stream.ReadToEnd().ToString();
-
-                    if (string.IsNullOrEmpty(result))
-                        result = ex.Message;
-                }
-                return RedirectToAction("ExibeProduto", "Produto", new { Alerta = result });
-
-            }
+            ViewData["Titulo"] = "Editar";
+            return View("CadastroProduto", produto);
         }
         public IActionResult ExcluirProduto(int id)
         {

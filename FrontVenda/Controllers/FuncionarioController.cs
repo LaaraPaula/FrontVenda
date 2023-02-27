@@ -62,20 +62,27 @@ namespace FrontVenda.Controllers
                 {
                     Funcionario funcionarioCadastrado = JsonConvert.DeserializeObject<Funcionario>(response.Content);
 
+                    if (funcionario.id == 0)
+                    {
+                        return RedirectToAction(
+                                                "CadastroFuncionario",
+                                                "Funcionario",
+                                                new
+                                                {
+                                                    Alerta = funcionarioCadastrado.id > 0 ?
+                                                    "Funcionario cadastrado com sucesso" : "Erro ao cadastrar funconario."
+                                                });
+                    }
                     return RedirectToAction(
-                                            "CadastroFuncionario",
+                                            "ExibeFuncionario",
                                             "Funcionario",
                                             new
                                             {
                                                 Alerta = funcionarioCadastrado.id > 0 ?
-                                                "Funcionario cadastrado com sucesso" : "Erro ao cadastrar funconario."
+                                                $"Funcionario {funcionario.nome} editado com sucesso" : $"Erro ao editar funcionario {funcionario.nome}."
                                             });
                 }
-                else
-                {
-                    return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content });
-
-                }
+                return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content });
             }
             catch (WebException ex)
             {
@@ -112,7 +119,17 @@ namespace FrontVenda.Controllers
         }
         public IActionResult EditarFuncionario(int id)
         {
-            return View();
+            Funcionario funcionario = new Funcionario();
+            funcionario.id = id;
+
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest($"ExibeFuncionarioPorId?id={funcionario.id}");
+
+            RestResponse response = _cliente.Execute(_request);
+            funcionario = JsonConvert.DeserializeObject<Funcionario>(response.Content);
+
+            ViewData["Titulo"] = "Editar";
+            return View("CadastroFuncionario", funcionario);
         }
         public IActionResult ExcluirFuncionario(int id)
         {

@@ -45,7 +45,6 @@ namespace FrontVenda.Controllers
 
             }
         }
-        [HttpPost("CadastroFornecedorForm")]
         public IActionResult CadastroFornecedorForm(Fornecedor fornecedor)
         {
             _cliente = new RestClient(_urlBase);
@@ -63,20 +62,28 @@ namespace FrontVenda.Controllers
                 {
                     Fornecedor fornecedorCadastrado = JsonConvert.DeserializeObject<Fornecedor>(response.Content);
 
-                    return RedirectToAction(
-                                            "CadastroFornecedor",
-                                            "Fornecedor",
-                                            new
-                                            {
-                                                Alerta = fornecedorCadastrado.id > 0 ?
-                                                "Fornecedor cadastrado com sucesso" : "Erro ao cadastrar fornecedor."
-                                            });
-                }
-                else
-                {
-                    return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content });
+                    if (fornecedor.id == 0)
+                    {
+                        return RedirectToAction(
+                                                "CadastroFornecedor",
+                                                "Fornecedor",
+                                                new
+                                                {
+                                                    Alerta = fornecedorCadastrado.id > 0 ?
+                                                    "Fornecedor cadastrado com sucesso" : "Erro ao cadastrar fornecedor."
+                                                });
+                    }
 
+                    return RedirectToAction(
+                                                "ExibeFornecedor",
+                                                "Fornecedor",
+                                                new
+                                                {
+                                                    Alerta = fornecedorCadastrado.id > 0 ?
+                                                    $"Fornecedor {fornecedor.nome} editado com sucesso" : $"Erro ao editar cliente {fornecedor.nome}."
+                                                });
                 }
+                return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content });
             }
             catch (WebException ex)
             {
@@ -94,14 +101,46 @@ namespace FrontVenda.Controllers
                 return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
             }
         }
-        [HttpGet]
         public IActionResult CadastroFornecedor(string alerta = null)
         {
-            return View();
+            try
+            {
+                Fornecedor fornecedor = new Fornecedor();
+                if (alerta != null)
+                {
+                    ViewBag.Alerta = alerta;
+                }
+                return View(fornecedor);
+            }
+            catch (WebException ex)
+            {
+                string result = "Erro ao realizar requisão.\n" + ex.Message;
+                var response = (HttpWebResponse)ex.Response;
+
+                if (response != null)
+                {
+                    StreamReader stream = new StreamReader(response.GetResponseStream());
+                    result = stream.ReadToEnd().ToString();
+
+                    if (string.IsNullOrEmpty(result))
+                        result = ex.Message;
+                }
+                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
+            }
         }
         public IActionResult EditarFornecedor(int id)
         {
-            return View();
+            Fornecedor fornecedor = new Fornecedor();
+            fornecedor.id = id;
+
+            _cliente = new RestClient(_urlBase);
+            _request = new RestRequest($"ExibeFornecedorPorId?id={fornecedor.id}");
+
+            RestResponse response = _cliente.Execute(_request);
+            fornecedor = JsonConvert.DeserializeObject<Fornecedor>(response.Content);
+
+            ViewData["Titulo"] = "Editar";
+            return View("CadastroFornecedor", fornecedor);
         }
         public IActionResult ExcluirFornecedor(int id)
         {

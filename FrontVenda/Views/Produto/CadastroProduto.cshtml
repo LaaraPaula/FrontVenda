@@ -20,7 +20,14 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    <h3>Cadastro</h3>
+    @if (ViewData["Titulo"] != null)
+    {
+        <h3> @ViewData["Titulo"]</h3>
+    }
+    else
+    {
+        <h3>Cadastro</h3>
+    }
     @using (Html.BeginForm("CadastroProdutoForm", "Produto", FormMethod.Post))
     {
         <div class="panel panel-default">
@@ -28,22 +35,22 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label" for="nomeProduto">Nome do Produto</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Produto" })
+                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Produto" ,@value=Model.nome})
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="descricao">Descrição</label>
-                        @Html.TextBoxFor(model => model.descricao, new { @class = "form-control" , @placeholder="Sobre o Produto.."})
+                        @Html.TextBoxFor(model => model.descricao, new { @class = "form-control" , @placeholder="Sobre o Produto..",@value=Model.descricao})
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="precoUni">Preço Unitário:</label>
-                        @Html.TextBoxFor(model => model.precoUnitario, new { @class = "form-control" ,@onkeyup="Formata(this.value)", @placeholder="0,00"})
+                        @Html.TextBoxFor(model => model.precoUnitario, new { @class = "form-control" ,@onkeyup="Formata(this.value)", @placeholder="0,00",@value=Model.precoUnitario})
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
-                        @Html.TextBoxFor(model => model.quantidadeEstoque, new { @class = "form-control" , @type="number",@min="1",@placeholder="0"})
+                        @Html.TextBoxFor(model => model.quantidadeEstoque, new { @class = "form-control" , @type="number",@min="1",@placeholder="0",@value=Model.quantidadeEstoque})
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.id)
+                @Html.HiddenFor(model => model.id, new{@value=Model.id})
                 @Html.AntiForgeryToken()
                 <input type="submit" value="Enviar" class="enviar">
             </div>
