@@ -95,11 +95,12 @@ namespace FrontVenda.Controllers
         {
             try
             {
+                Funcionario funcionario = new Funcionario();
                 if (alerta != null)
                 {
                     ViewBag.Alerta = alerta;
                 }
-                return View();
+                return View(funcionario);
             }
             catch (WebException ex)
             {

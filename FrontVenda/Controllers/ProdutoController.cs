@@ -96,11 +96,12 @@ namespace FrontVenda.Controllers
         {
             try
             {
+                Produto produto = new Produto();
                 if (alerta != null)
                 {
                     ViewBag.Alerta = alerta;
                 }
-                return View();
+                return View(produto);
             }
             catch (WebException ex)
             {

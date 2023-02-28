@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="cnpj">CNPJ</label>
-                        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", @placeholder="XXX.XXX.XXX-XX", @value=Model.cnpj})
+                        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", @placeholder="XX.XXX.XXX/XXXX-XX", @value=Model.cnpj})
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="endereco">Endereço</label>
@@ -59,5 +59,12 @@
         </div>
     }
     <script src="/js/controle.js"></script>
+    <script>
+        document.getElementById('fornecedor').classList.add('active');
+
+        document.getElementById('funcionario').classList.remove('active');
+        document.getElementById('cliente').classList.remove('avtive');
+        document.getElementById('produto').classList.remove('active');
+    </script>
 </body>
 </html>

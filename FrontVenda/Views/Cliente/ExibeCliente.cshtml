@@ -1,4 +1,4 @@
-@model List<Cliente>;
+﻿@model List<Cliente>;
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -73,5 +73,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script src="js/controle.js"></script>
+    <script>
+        document.getElementById('cliente').classList.add('active'); // Adiciona classe
+
+        document.getElementById('funcionario').classList.remove('active'); // Remove classe
+        document.getElementById('fornecedor').classList.remove('active');
+        document.getElementById('produto').classList.remove('active');
+    </script>
 </body>
 </html>

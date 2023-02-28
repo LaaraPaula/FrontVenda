@@ -87,6 +87,7 @@ h3{
 	color: #4169E1;
 	margin: 20px 10px 45px;
 	clear: left;
+	font-weight: 900 
 }
 .principal{
 	padding: 3em 0;
@@ -140,6 +141,10 @@ h3{
 	.lista-beneficios, .imagem-beneficios{
 		width: 100%;
 	}
+}
+.nav-item {
+	font-family: American Typewriter, serif;
+	font-size: 20px;
 }
 
 
