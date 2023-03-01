@@ -83,7 +83,7 @@ namespace FrontVenda.Controllers
                                                 $"Produto  editado com sucesso" : $"Erro ao editar produto ."
                                             });
                 }
-                return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content });
+                return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content.Replace("\"", "") });
             }
             catch (WebException ex)
             {

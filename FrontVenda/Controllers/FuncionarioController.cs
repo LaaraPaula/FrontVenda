@@ -82,7 +82,7 @@ namespace FrontVenda.Controllers
                                                 $"Funcionario editado com sucesso" : $"Erro ao editar funcionario."
                                             });
                 }
-                return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content });
+                return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content.Replace("\"", "") });
             }
             catch (WebException ex)
             {
@@ -115,7 +115,7 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result });
+                return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result});
             }
         }
         public IActionResult EditarFuncionario(int id)

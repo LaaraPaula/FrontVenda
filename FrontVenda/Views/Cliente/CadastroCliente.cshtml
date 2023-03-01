@@ -43,7 +43,14 @@
                 @Html.HiddenFor(model => model.id , new{@value=Model.id})
                 @Html.AntiForgeryToken()
 
-                <input type="submit" value="Enviar" class="enviar">
+                <div>
+                    <input type="submit" value="Enviar" class="enviar btn btn-primary">
+                    
+                </div>
+                <div id="aa">
+                    <a class="voltar" asp-controller="Cliente" asp-action="ExibeCliente">Voltar</a>
+                </div>
+                
             </div>
         </div>
     }

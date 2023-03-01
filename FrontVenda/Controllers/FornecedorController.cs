@@ -83,7 +83,7 @@ namespace FrontVenda.Controllers
                                                     $"Fornecedor editado com sucesso" : $"Erro ao editar cliente ."
                                                 });
                 }
-                return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content });
+                return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content.Replace("\"", "") });
             }
             catch (WebException ex)
             {
@@ -154,7 +154,7 @@ namespace FrontVenda.Controllers
                 StreamReader responseReader = new(webStream);
                 string response = responseReader.ReadToEnd();
 
-                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response });
+                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response.Replace("\"", "") });
             }
             catch (WebException ex)
             {

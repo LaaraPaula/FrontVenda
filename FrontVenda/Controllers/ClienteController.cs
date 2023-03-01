@@ -87,8 +87,7 @@ namespace FrontVenda.Controllers
                                             });
 
                 }
-
-                return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content });
+                return RedirectToAction("CadastroCliente", "CLiente", new { Alerta = response.Content.Replace("\"", "") });
             }
             catch (WebException ex)
             {
