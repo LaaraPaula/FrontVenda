@@ -87,7 +87,7 @@ namespace FrontVenda.Controllers
             }
             catch (WebException ex)
             {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
                 var response = (HttpWebResponse)ex.Response;
 
                 if (response != null)
@@ -114,7 +114,7 @@ namespace FrontVenda.Controllers
             }
             catch (WebException ex)
             {
-                string result = "Erro ao realizar requisão.\n" + ex.Message;
+                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
                 var response = (HttpWebResponse)ex.Response;
 
                 if (response != null)
@@ -158,7 +158,7 @@ namespace FrontVenda.Controllers
             }
             catch (WebException ex)
             {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
                 var response = (HttpWebResponse)ex.Response;
 
                 if (response != null)
