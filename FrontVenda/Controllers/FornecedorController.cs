@@ -80,7 +80,7 @@ namespace FrontVenda.Controllers
                                                 new
                                                 {
                                                     Alerta = fornecedorCadastrado.id > 0 ?
-                                                    $"Fornecedor {fornecedor.nome} editado com sucesso" : $"Erro ao editar cliente {fornecedor.nome}."
+                                                    $"Fornecedor editado com sucesso" : $"Erro ao editar cliente ."
                                                 });
                 }
                 return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content });

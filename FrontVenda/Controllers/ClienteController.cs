@@ -83,7 +83,7 @@ namespace FrontVenda.Controllers
                                             new
                                             {
                                                 Alerta = clienteCadastrado.id > 0 ?
-                                                $"Cliente {cliente.nome} editado com sucesso" : $"Erro ao editar cliente {cliente.nome}."
+                                                $"Cliente editado com sucesso" : $"Erro ao editar cliente."
                                             });
 
                 }

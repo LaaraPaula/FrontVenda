@@ -80,14 +80,14 @@ namespace FrontVenda.Controllers
                                             new
                                             {
                                                 Alerta = produtoCadastrado.id > 0 ?
-                                                $"Produto {produto.nome} editado com sucesso" : $"Erro ao editar produto {produto.nome}."
+                                                $"Produto  editado com sucesso" : $"Erro ao editar produto ."
                                             });
                 }
                 return RedirectToAction("CadastroProduto", "Produto", new { Alerta = response.Content });
             }
             catch (WebException ex)
             {
-                string result = "Erro ao realizar requisição.\n" + ex.Message;
+                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
 
                 return RedirectToAction("CadastroProdutoView", "Produto", new { Alerta = result });
             }

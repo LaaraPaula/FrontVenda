@@ -79,7 +79,7 @@ namespace FrontVenda.Controllers
                                             new
                                             {
                                                 Alerta = funcionarioCadastrado.id > 0 ?
-                                                $"Funcionario {funcionario.nome} editado com sucesso" : $"Erro ao editar funcionario {funcionario.nome}."
+                                                $"Funcionario editado com sucesso" : $"Erro ao editar funcionario."
                                             });
                 }
                 return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content });
