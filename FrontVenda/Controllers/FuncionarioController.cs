@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System;
-using System.Text.Json;
 using RestSharp;
 using Newtonsoft.Json;
-using Microsoft.SharePoint.Client;
 
 namespace FrontVenda.Controllers
 {
@@ -41,11 +38,12 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("ExibeFuncionario", "Funcionario", new { Alerta = result });
+                return Ok(result);
 
             }
         }
-        public IActionResult CadastroFuncionarioForm(Funcionario funcionario)
+        [HttpPost]
+        public IActionResult CadastroFuncionario(Funcionario funcionario)
         {
             _cliente = new RestClient(_urlBase);
             _request = new RestRequest("SaveFuncionario");
@@ -58,66 +56,23 @@ namespace FrontVenda.Controllers
 
                 RestResponse response = _cliente.Execute(_request);
 
-                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
-                {
-                    Funcionario funcionarioCadastrado = JsonConvert.DeserializeObject<Funcionario>(response.Content);
+                HttpStatusCode statusCode = response.StatusCode;
+                int iStatusCode = (int)statusCode;
 
-                    if (funcionario.id == 0)
-                    {
-                        return RedirectToAction(
-                                                "CadastroFuncionario",
-                                                "Funcionario",
-                                                new
-                                                {
-                                                    Alerta = funcionarioCadastrado.id > 0 ?
-                                                    "Funcionario cadastrado com sucesso" : "Erro ao cadastrar funconario."
-                                                });
-                    }
-                    return RedirectToAction(
-                                            "ExibeFuncionario",
-                                            "Funcionario",
-                                            new
-                                            {
-                                                Alerta = funcionarioCadastrado.id > 0 ?
-                                                $"Funcionario editado com sucesso" : $"Erro ao editar funcionario."
-                                            });
-                }
-                return RedirectToAction("CadastroFuncionario", "Funcionario", new { Alerta = response.Content.Replace("\"", "") });
+                return StatusCode(iStatusCode, response.Content);
             }
             catch (WebException ex)
             {
                 string result = "Erro ao realizar requisiçao.\n" + ex.Message;
-                
-                return RedirectToAction("CadastroFuncioanrioView", "Funcionario", new { Alerta = result });
+                return StatusCode(500, ex.Message);
             }
         }
-        public IActionResult CadastroFuncionario(string alerta = null)
+        [HttpGet]
+        public IActionResult CadastroFuncionario()
         {
-            try
-            {
-                Funcionario funcionario = new Funcionario();
-                if (alerta != null)
-                {
-                    ViewBag.Alerta = alerta;
-                }
-                return View(funcionario);
-            }
-            catch (WebException ex)
-            {
-                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
-                var response = (HttpWebResponse)ex.Response;
-
-                if (response != null)
-                {
-                    StreamReader stream = new StreamReader(response.GetResponseStream());
-                    result = stream.ReadToEnd().ToString();
-
-                    if (string.IsNullOrEmpty(result))
-                        result = ex.Message;
-                }
-                return RedirectToAction("CadastroClienteView", "Cliente", new { Alerta = result});
-            }
+            return View(new Funcionario());
         }
+        [HttpGet]
         public IActionResult EditarFuncionario(int id)
         {
             Funcionario funcionario = new Funcionario();
@@ -129,7 +84,6 @@ namespace FrontVenda.Controllers
             RestResponse response = _cliente.Execute(_request);
             funcionario = JsonConvert.DeserializeObject<Funcionario>(response.Content);
 
-            ViewData["Titulo"] = "Editar";
             return View("CadastroFuncionario", funcionario);
         }
         public IActionResult ExcluirFuncionario(int id)
@@ -144,7 +98,7 @@ namespace FrontVenda.Controllers
                 StreamReader responseReader = new(webStream);
                 string response = responseReader.ReadToEnd();
 
-                return RedirectToAction("ExibeFuncionario", "Funcionario", new { Alerta = response });
+                return Ok(response);
             }
             catch (WebException ex)
             {
@@ -159,7 +113,7 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("ExibeFuncionario", "Funcionario", new { Alerta = result });
+                return Ok(result);
 
             }
 
@@ -177,5 +131,5 @@ namespace FrontVenda.Controllers
             return funcionarios;
         }
     }
-    
+
 }

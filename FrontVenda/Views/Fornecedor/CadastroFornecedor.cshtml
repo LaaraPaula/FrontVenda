@@ -10,49 +10,41 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    @if(ViewData["Titulo"]!= null)
-    {
-        <h3> @ViewData["Titulo"]</h3>
-    }
-    else
-    {
-        <h3>Cadastro</h3>
-    }
-    @using (Html.BeginForm("CadastroFornecedorForm", "Fornecedor", FormMethod.Post))
-    {
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label" for="nomeFornecedor">Nome do Fornecedor</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Fornecedor", @value=Model.nome})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="telefone">Telefone</label>
-                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" , @placeholder="XXXXXXX-XXXX", @value=Model.telefone})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="cnpj">CNPJ</label>
-                        @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control", @placeholder="XX.XXX.XXX/XXXX-XX", @value=Model.cnpj})
-                    </div>
+    <h3 id="divTitulo">Cadastro</h3>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="nomeFornecedor">Nome do Fornecedor</label>
+                    @Html.TextBoxFor(model => model.nome, new { @class = "form-control",@required="required",@placeholder="Nome do Fornecedor", @value=Model.nome})
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="telefone">Telefone</label>
+                    @Html.TextBoxFor(model => model.telefone, new { @class = "form-control",@required="required" , @placeholder="XXXXXXX-XXXX", @value=Model.telefone})
                     <div class="form-group">
                         <label class="control-label" for="endereco">Endereço</label>
-                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control", @placeholder="Endereço" , @value=Model.endereco})
+                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control",@required="required", @placeholder="Endereço" , @value=Model.endereco})
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.id , new {@value=Model.id})
-                @Html.AntiForgeryToken()
-
-                <div>
-                    <input type="submit" value="Enviar" class="enviar btn btn-primary">
-
-                </div>
-                <div id="aa">
-                    <a class="voltar" asp-controller="Fornecedor" asp-action="ExibeFornecedor">Voltar</a>
+                <div class="form-group">
+                    <label class="control-label" for="cnpj">CNPJ</label>
+                    @Html.TextBoxFor(model => model.cnpj, new { @class = "form-control validaDesabilita",@required="required", @placeholder="XX.XXX.XXX/XXXX-XX", @value=Model.cnpj})
                 </div>
             </div>
+            @Html.HiddenFor(model => model.id , new {@value=Model.id})
+            @Html.AntiForgeryToken()
+
+            <div>
+                <button class="btn btn-primary" id="btnEnviar" onclick="cadastroFornecedor()">Enviar</button>
+            </div>
+            <div id="aa">
+                <button class="btn btn-primary" id="btnVoltar" onclick="openInNewTab('/Fornecedor/ExibeFornecedor')">Voltar</button>
+            </div>
         </div>
-    }
+    </div>
+
+    <script src="/js/fornecedor.js"></script>
     <script>
         document.getElementById('fornecedor').classList.add('active');
 

@@ -24,29 +24,17 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr id="tr-table-@item.id">
                         <td>@Html.DisplayFor(modelItem => item.id)</td>
                         <td>@Html.DisplayFor(modelItem => item.nome)</td>
                         <td>@Html.DisplayFor(modelItem => item.cnpj)</td>
                         <td>@Html.DisplayFor(modelItem => item.telefone)</td>
                         <td>@Html.DisplayFor(modelItem => item.endereco)</td>
-                        <td>  
-                            @Html.ActionLink(
-                                " ",
-                                "EditarFornecedor",
-                                "Fornecedor",
-                                new {id = item.id},
-                                new {@class="btn btn-default fa fa-pencil"}
-                            )
+                        <td>
+                            <button class="btn btn-default fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar" id="botao-editar" onclick="openInNewTab('/Fornecedor/EditarFornecedor?id=@item.id')"></button>
                         </td>
                         <td>
-                            @Html.ActionLink(
-                                " ",
-                                "ExcluirFornecedor",
-                                "Fornecedor",
-                                new {id = item.id},
-                                new {@class="btn btn-default fa fa-trash"}
-                            )
+                            <button class="btn btn-default fa fa-trash" data-toggle="tooltip" data-placement="top" title="Excluir" id="botao-excluir" onclick="excluirFornecedor(@item.id)"></button>
                         </td>
                     </tr>
                 }
@@ -55,7 +43,8 @@
     </section>
     <div id="botao-cadastrar">
         <a class="btn btn-primary" asp-controller="Fornecedor" asp-action="CadastroFornecedor">CADASTRAR</a>
-    </div>    
+    </div>
+    <script src="/js/fornecedor.js"></script>
     <script>
         document.getElementById('fornecedor').classList.add('active');
 

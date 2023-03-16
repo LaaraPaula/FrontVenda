@@ -12,12 +12,12 @@
         <table class="table table-striped">
             <thead>
                 <tr class="table-primary">
-                    <th scope="col" style="width:5%" >Id</th>
+                    <th scope="col" style="width:5%">Id</th>
                     <th scope="col" style="width:25%">Nome</th>
                     <th scope="col" style="width:15%">CPF</th>
                     <th scope="col" style="width:15%">Telefone</th>
                     <th scope="col" style="width:35%">Endereço</th>
-                    <th scope="col" style="width:5%" >Cargo</th>
+                    <th scope="col" style="width:5%">Cargo</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -25,7 +25,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr id="tr-table-@item.id">
                         <td>@Html.DisplayFor(modelItem => item.id)</td>
                         <td>@Html.DisplayFor(modelItem => item.nome)</td>
                         <td>@Html.DisplayFor(modelItem => item.cpf)</td>
@@ -33,22 +33,10 @@
                         <td>@Html.DisplayFor(modelItem => item.endereco)</td>
                         <td>@Html.DisplayFor(modelItem => item.cargo)</td>
                         <td>
-                            @Html.ActionLink(
-                        " ",
-                        "EditarFuncionario",
-                        "Funcionario",
-                        new {id = item.id},
-                        new {@class="btn btn-default fa fa-pencil"}
-                        )
+                            <button class="btn btn-default fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar" id="botao-editar" onclick="openInNewTab('/Funcionario/EditarFuncionario?id=@item.id')"></button>
                         </td>
                         <td>
-                            @Html.ActionLink(
-                        " ",
-                        "ExcluirFuncionario",
-                        "Funcionario",
-                        new {id = item.id},
-                        new {@class="btn btn-default fa fa-trash"}
-                        )
+                            <button class="btn btn-default fa fa-trash" data-toggle="tooltip" data-placement="top" title="Excluir" id="botao-excluir" onclick="excluirFuncionario(@item.id)"></button>
                         </td>
                     </tr>
                 }
@@ -58,6 +46,7 @@
     <div id="botao-cadastrar">
         <a class="btn btn-primary" asp-controller="Funcionario" asp-action="CadastroFuncionario">CADASTRAR</a>
     </div>
+    <script src="/js/funcionario.js"></script>
     <script>
         document.getElementById('funcionario').classList.add('active');
 

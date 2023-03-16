@@ -10,49 +10,40 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    @if (ViewData["Titulo"] != null)
-    {
-        <h3> @ViewData["Titulo"]</h3>
-    }
-    else
-    {
-        <h3>Cadastro</h3>
-    }
-    @using (Html.BeginForm("CadastroProdutoForm", "Produto", FormMethod.Post))
-    {
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label" for="nomeProduto">Nome do Produto</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@placeholder="Nome do Produto" ,@value=Model.nome})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="descricao">Descrição</label>
-                        @Html.TextBoxFor(model => model.descricao, new { @class = "form-control" , @placeholder="Sobre o Produto..",@value=Model.descricao})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="precoUni">Preço Unitário:</label>
-                        @Html.TextBoxFor(model => model.precoUnitario, new { @class = "form-control" ,@onkeyup="Formata(this.value)", @placeholder="0,00",@value=Model.precoUnitario})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
-                        @Html.TextBoxFor(model => model.quantidadeEstoque, new { @class = "form-control" , @type="number",@min="1",@placeholder="0",@value=Model.quantidadeEstoque})
-                    </div>
-                </div>
-                @Html.HiddenFor(model => model.id, new{@value=Model.id})
-                @Html.AntiForgeryToken()
+    <h3 id="divTitulo">Cadastro</h3>
 
-                <div>
-                    <input type="submit" value="Enviar" class="enviar btn btn-primary">
-
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="nomeProduto">Nome do Produto</label>
+                    @Html.TextBoxFor(model => model.nome, new { @class = "form-control" ,@required="required",@placeholder="Nome do Produto" ,@value=Model.nome})
                 </div>
-                <div id="aa">
-                    <a class="voltar" asp-controller="Produto" asp-action="ExibeProduto">Voltar</a>
+                <div class="form-group">
+                    <label class="control-label" for="descricao">Descrição</label>
+                    @Html.TextBoxFor(model => model.descricao, new { @class = "form-control",@required="required" , @placeholder="Sobre o Produto..",@value=Model.descricao})
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="precoUni">Preço Unitário:</label>
+                    @Html.TextBoxFor(model => model.precoUnitario, new { @class = "form-control",@required="required" ,@onkeyup="Formata(this.value)", @placeholder="0,00",@value=Model.precoUnitario})
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="qtdItens">Quantidade no Estoque:</label>
+                    @Html.TextBoxFor(model => model.quantidadeEstoque, new { @class = "form-control validaDesabilita",@required="required" , @type="number",@min="1",@placeholder="0",@value=Model.quantidadeEstoque})
                 </div>
             </div>
-        </div>        
-    }
+            @Html.HiddenFor(model => model.id, new{@value=Model.id})
+            @Html.AntiForgeryToken()
+
+            <div>
+                <button class="btn btn-primary" id="btnEnviar" onclick="cadastroProduto()">Enviar</button>
+            </div>
+            <div id="aa">
+                <button class="btn btn-primary" id="btnVoltar" onclick="openInNewTab('/Produto/ExibeProduto')">Voltar</button>
+            </div>
+        </div>
+    </div>
+    <script src="/js/produto.js"></script>
     <script>
         document.getElementById('produto').classList.add('active');
 

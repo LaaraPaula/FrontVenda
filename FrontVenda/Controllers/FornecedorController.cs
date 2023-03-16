@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Net;
-using System.Text.Json;
-using Microsoft.SharePoint.Client;
 using RestSharp;
-using Newtonsoft.Json;
 
 namespace FrontVenda.Controllers
 {
@@ -41,11 +37,12 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = result });
+                return Ok(result);
 
             }
         }
-        public IActionResult CadastroFornecedorForm(Fornecedor fornecedor)
+        [HttpPost]
+        public IActionResult CadastroFornecedor(Fornecedor fornecedor)
         {
             _cliente = new RestClient(_urlBase);
             _request = new RestRequest("SaveFornecedor");
@@ -54,92 +51,40 @@ namespace FrontVenda.Controllers
             {
                 _request.Timeout = 0;
                 _request.Method = Method.Post;
+
                 _request.AddBody(fornecedor, "application/json");
 
                 RestResponse response = _cliente.Execute(_request);
 
-                if (response.Content.ToUpper().Contains("ID") && response.StatusCode == HttpStatusCode.OK)
-                {
-                    Fornecedor fornecedorCadastrado = JsonConvert.DeserializeObject<Fornecedor>(response.Content);
+                HttpStatusCode statusCode = response.StatusCode;
+                int iStatusCode = (int)statusCode;
 
-                    if (fornecedor.id == 0)
-                    {
-                        return RedirectToAction(
-                                                "CadastroFornecedor",
-                                                "Fornecedor",
-                                                new
-                                                {
-                                                    Alerta = fornecedorCadastrado.id > 0 ?
-                                                    "Fornecedor cadastrado com sucesso" : "Erro ao cadastrar fornecedor."
-                                                });
-                    }
-
-                    return RedirectToAction(
-                                                "ExibeFornecedor",
-                                                "Fornecedor",
-                                                new
-                                                {
-                                                    Alerta = fornecedorCadastrado.id > 0 ?
-                                                    $"Fornecedor editado com sucesso" : $"Erro ao editar cliente ."
-                                                });
-                }
-                return RedirectToAction("CadastroFornecedor", "Fornecedor", new { Alerta = response.Content.Replace("\"", "") });
+                return StatusCode(iStatusCode, response.Content); ;
             }
             catch (WebException ex)
             {
-                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
-                var response = (HttpWebResponse)ex.Response;
-
-                if (response != null)
-                {
-                    StreamReader stream = new StreamReader(response.GetResponseStream());
-                    result = stream.ReadToEnd().ToString();
-
-                    if (string.IsNullOrEmpty(result))
-                        result = ex.Message;
-                }
-                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
+                return StatusCode(500, ex.Message);
             }
         }
-        public IActionResult CadastroFornecedor(string alerta = null)
+        [HttpGet]
+        public IActionResult CadastroFornecedor()
         {
-            try
-            {
-                Fornecedor fornecedor = new Fornecedor();
-                if (alerta != null)
-                {
-                    ViewBag.Alerta = alerta;
-                }
-                return View(fornecedor);
-            }
-            catch (WebException ex)
-            {
-                string result = "Erro ao realizar requisiçao.\n" + ex.Message;
-                var response = (HttpWebResponse)ex.Response;
-
-                if (response != null)
-                {
-                    StreamReader stream = new StreamReader(response.GetResponseStream());
-                    result = stream.ReadToEnd().ToString();
-
-                    if (string.IsNullOrEmpty(result))
-                        result = ex.Message;
-                }
-                return RedirectToAction("CadastroFornecedorView", "Fornecedor", new { Alerta = result });
-            }
+            return View(new Fornecedor());
         }
-        public IActionResult EditarFornecedor(int id)
+        [HttpGet]
+        public IActionResult EditarFornecedor(int id = 0)
         {
             Fornecedor fornecedor = new Fornecedor();
             fornecedor.id = id;
 
             _cliente = new RestClient(_urlBase);
-            _request = new RestRequest($"ExibeFornecedorPorId?id={fornecedor.id}");
+            _request = new RestRequest("ExibeFornecedorPorId?id=" + id);
 
             RestResponse response = _cliente.Execute(_request);
-            fornecedor = JsonConvert.DeserializeObject<Fornecedor>(response.Content);
 
-            ViewData["Titulo"] = "Editar";
+            fornecedor = System.Text.Json.JsonSerializer.Deserialize<Fornecedor>(response.Content);
+
+
             return View("CadastroFornecedor", fornecedor);
         }
         public IActionResult ExcluirFornecedor(int id)
@@ -154,7 +99,7 @@ namespace FrontVenda.Controllers
                 StreamReader responseReader = new(webStream);
                 string response = responseReader.ReadToEnd();
 
-                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = response.Replace("\"", "") });
+                return Ok(response);
             }
             catch (WebException ex)
             {
@@ -169,7 +114,7 @@ namespace FrontVenda.Controllers
                     if (string.IsNullOrEmpty(result))
                         result = ex.Message;
                 }
-                return RedirectToAction("ExibeFornecedor", "Fornecedor", new { Alerta = result });
+                return Ok(result);
 
             }
 

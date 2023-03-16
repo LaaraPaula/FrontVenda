@@ -1,11 +1,11 @@
 ﻿@model List<Cliente>;
 
 <body>
-    @if(ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
+    @if (ViewBag.Alerta != string.Empty && ViewBag.Alerta != null)
     {
         <script type="text/javascript">
             alert('@ViewBag.Alerta');
-            </script>
+        </script>
     }
     <h1 class="titulo-principal">Clientes</h1>
     <section class="lista">
@@ -22,33 +22,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model) {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.id)</td>
+                @foreach (var item in Model)
+                {
+                    <tr id="tr-table-@item.id">
+                        <td class="id-cliente">@Html.DisplayFor(modelItem => item.id)</td>
                         <td>@Html.DisplayFor(modelItem => item.nome)</td>
                         <td>@Html.DisplayFor(modelItem => item.cpf)</td>
                         <td>@Html.DisplayFor(modelItem => item.telefone)</td>
                         <td>@Html.DisplayFor(modelItem => item.endereco)</td>
-                        <td>  
-                            @Html.ActionLink(
-                                " ",
-                                "EditarCliente",
-                                "Cliente",
-                                new {id = item.id},
-                                new {@class="btn btn-default fa fa-pencil"}
-                            )
+                        <td>
+                            <button class="btn btn-default fa fa-pencil" data-toggle="tooltip" data-placement="top" title="Editar" id="botao-editar" onclick="openInNewTab('/Cliente/EditarClienteView?id=@item.id')"></button>
                         </td>
                         <td>
-                            @Html.ActionLink(
-                                " ",
-                                "ExcluirCliente",
-                                "Cliente",
-                                new {id = item.id},
-                                new {@class="btn btn-default fa fa-trash"}
-                            )
+                            <button class="btn btn-default fa fa-trash" data-toggle="tooltip" data-placement="top" title="Excluir" id="botao-excluir" onclick="excluirCliente(@item.id)"></button>
                         </td>
                     </tr>
-                }                
+                }
             </tbody>
         </table>
     </section>
@@ -57,6 +46,7 @@
         <a class="btn btn-primary" asp-controller="Cliente" asp-action="CadastroCliente">CADASTRAR</a>
 
     </div>
+    <script src="/js/cliente.js"></script>
     <script>
         document.getElementById('cliente').classList.add('active'); // Adiciona classe
 

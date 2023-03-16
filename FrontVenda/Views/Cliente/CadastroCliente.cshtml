@@ -10,51 +10,42 @@
             alert('@ViewBag.Alerta');
         </script>
     }
-    @if(ViewData["Titulo"]!= null)
-    {
-        <h3> @ViewData["Titulo"]</h3>
-    }
-    else
-    {
-        <h3>Cadastro</h3>
-    }
-    @using (Html.BeginForm("CadastroClienteForm", "Cliente", FormMethod.Post))
-    {
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label" for="nomeCliente">Nome do Cliente</label>
-                        @Html.TextBoxFor(model => model.nome, new { @class = "form-control",@required="required",@placeholder="Nome do Cliente" ,@value=Model.nome})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="telefone">Telefone</label>
-                        @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" ,@required="required",@placeholder="XXXXXXX-XXXX" , @value=Model.telefone})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="endereco">Endereço</label>
-                        @Html.TextBoxFor(model => model.endereco, new { @class = "form-control",@required="required", @placeholder="Endereço",@value=Model.endereco})
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="cpf">CPF</label>
-                        @Html.TextBoxFor(model => model.cpf, new { @class = "form-control",@required="required",  @placeholder="XXX.XXX.XXX-XX" , @value=Model.cpf})
-                    </div>
-                </div>
-                @Html.HiddenFor(model => model.id , new{@value=Model.id})
-                @Html.AntiForgeryToken()
+    <h3 id="divTitulo">Cadastro</h3>
 
-                <div>
-                    <input type="submit" value="Enviar" class="enviar btn btn-primary">
-                    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="nomeCliente">Nome do Cliente</label>
+                    @Html.TextBoxFor(model => model.nome, new { @class = "form-control",@required="required",@placeholder="Nome do Cliente" ,@value=Model.nome})
                 </div>
-                <div id="aa">
-                    <a class="voltar" asp-controller="Cliente" asp-action="ExibeCliente">Voltar</a>
+                <div class="form-group">
+                    <label class="control-label" for="telefone">Telefone</label>
+                    @Html.TextBoxFor(model => model.telefone, new { @class = "form-control" ,@required="required",@placeholder="XXXXXXX-XXXX" , @value=Model.telefone})
                 </div>
-                
+                <div class="form-group">
+                    <label class="control-label" for="endereco">Endereço</label>
+                    @Html.TextBoxFor(model => model.endereco, new { @class = "form-control",@required="required", @placeholder="Endereço",@value=Model.endereco})
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="cpf">CPF</label>
+                    @Html.TextBoxFor(model => model.cpf, new { @class = "form-control validaDesabilita",@required="required",  @placeholder="XXX.XXX.XXX-XX" , @value=Model.cpf})
+                </div>
             </div>
+            @Html.HiddenFor(model => model.id , new{@value=Model.id})
+            @Html.AntiForgeryToken()
+
+            <div>
+                <button class="btn btn-primary" id="btnEnviar" onclick="cadastroCliente()">Enviar</button>
+            </div>
+            <div id="aa">
+                <button class="btn btn-primary" id="btnVoltar" onclick="openInNewTab()">Voltar</button>
+            </div>
+
         </div>
-    }
+    </div>
     <script src="/js/controle.js"></script>
+    <script src="/js/cliente.js"></script>
     <script>
         document.getElementById('cliente').classList.add('active'); // Adiciona classe
 

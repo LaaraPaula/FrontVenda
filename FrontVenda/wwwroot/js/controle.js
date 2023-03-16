@@ -13,25 +13,26 @@
 function VerificaeEdit() {
     var url_atual = window.location.href;
 
-    if (url_atual.includes("Editar")) {
-        var local = url_atual.substring((url_atual.indexOf("Editar") + 6), url_atual.lastIndexOf("/")); //Pega o ambiente depois de Edit e antes da barra
+    if (url_atual.includes("Editar")) {        
 
-        switch (local) {
-            case "Funcionario":
-            case "Cliente":
-                document.getElementById('cpf').setAttribute('disabled', 'disabled');
-                break;
-
-            case "Produto":
-                document.getElementById('quantidadeEstoque').setAttribute('disabled', 'disabled');
-                break;
-
-            default:
-                document.getElementById('cnpj').setAttribute('disabled', 'disabled');
-        }
+        $(".validaDesabilita").prop("disabled", true);
 
     }
 
 }
 
 VerificaeEdit();
+//var local = url_atual.substring((url_atual.indexOf("Editar") + 6), url_atual.lastIndexOf("/")); //Pega o ambiente depois de Edit e antes da barra
+//switch (local) {
+//    case "Funcionario":
+//    case "Cliente":
+//        $("#cpf").prop("disabled", true);
+//        break;
+
+//    case "Produto":
+//        $("#quantidadeEstoque").prop("disabled", true);
+//        break;
+
+//    default:
+//        $("#cnpj").prop("disabled", true);
+//}
